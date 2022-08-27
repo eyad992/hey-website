@@ -1,86 +1,81 @@
-import React from 'react';
-import styled, { css } from 'styled-components/macro';
-import { Link } from 'react-router-dom';
-import { menuData } from '../data/MenuData';
+import React, { useState, useEffect } from 'react';
 import { Button } from './Button';
-import { FaBars } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import './styles/Navbar.css';
 
-const NavBtn = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: 24px;
 
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-const Nav = styled.nav`
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  z-index: 100;
-  position: fixed;
-  width: 100%;
-  background: red;
-`;
-
-const NavLink = css`
-  color: #fff;
-  display: flex;
-  align-items: center;
-  padding: 0 1rem;
-  height: 100%;
-  cursor: pointer;
-  text-dicoration: none;
-`;
-
-const Logo = styled(Link)`
-  ${NavLink}
-  font-style: italic;
-`;
-
-const MenuBars = styled(FaBars)`
-  display: none;
-  @media screen and (max-width: 768px) {
-    display: block;
-    width: 40px;
-    height: 40px;
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(-50%, 25%);
-  }
-`;
-const NavMenu = styled.div`
-  display: flex;
-  align-items: center;
-  margin-right: -48px;
-
-  @media screen and (max-width: 768px) {
-    display: none;
-  }
-`;
-const NavMenuLinks = styled(Link)`
-  ${NavLink};
-`;
 function Navbar() {
+  const [click, setClick] = useState(false);
+  const [button, setButton] = useState(true);
+
+  const handleClick = () => setClick(!click);
+  const closeMobileMenu = () => setClick(false);
+
+  const showButton = () => {
+    if (window.innerWidth <= 960) {
+      setButton(false);
+    } else {
+      setButton(true);
+    }
+  };
+
+  useEffect(() => {
+    showButton();
+  }, []);
+
+  window.addEventListener('resize', showButton);
+
   return (
-    <Nav>
-      <Logo to=''>ELIXR</Logo>
-      <MenuBars />
-      <NavMenu>
-        {menuData.map((item, index) => (
-          <NavMenuLinks to={item.link} key={index}>
-            {item.title}
-          </NavMenuLinks>
-        ))}
-      </NavMenu>
-      <NavBtn>
-        <Button to="/contact" primary='true'>Contact Us</Button>
-      </NavBtn>
-    </Nav>
-  )
+    <>
+      <nav className='navbar'>
+        <div className='navbar-container'>
+          <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+            HEY! Solutions
+            <i class='fab fa-typo3' />
+          </Link>
+          <div className='menu-icon' onClick={handleClick}>
+            <i className={click ? 'fas fa-times' : 'fas fa-bars'} />
+          </div>
+          <ul className={click ? 'nav-menu active' : 'nav-menu'}>
+            <li className='nav-item'>
+              <Link to='/' className='nav-links' onClick={closeMobileMenu}>
+                Home
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/services'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Services
+              </Link>
+            </li>
+            <li className='nav-item'>
+              <Link
+                to='/products'
+                className='nav-links'
+                onClick={closeMobileMenu}
+              >
+                Projects
+              </Link>
+            </li>
+
+            <li>
+              <Link
+                to='/sign-up'
+                className='nav-links-mobile'
+                onClick={closeMobileMenu}
+              >
+                Sign Up
+              </Link>
+            </li>
+          </ul>
+          {button && <Button buttonStyle='btn--outline'>Contact us</Button>}
+        </div>
+      </nav>
+    </>
+  );
 }
 
-export default Navbar
+export default Navbar;
