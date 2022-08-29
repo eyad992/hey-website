@@ -3,10 +3,10 @@ import '../../App.css';
 import Footer from '../Footer';
 
 
-export default function Products() {
+export default function Projects() {
   return (
     <>
-      <h1 className='products'>PRODUCTS</h1>
+      <h1 className='projects'>Projects</h1>
       <Footer />
     </>
   );
