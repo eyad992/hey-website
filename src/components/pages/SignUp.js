@@ -6,25 +6,39 @@ import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Button from 'react-bootstrap/Button';
 import '../styles/Signup.scss';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 export default function SignUp() {
 
   const form = useRef();
+  const notify = () => toast();
 
   const sendEmail = (e) => {
     e.preventDefault();
 
-    emailjs.sendForm('service_yyixitl', 'template_8vmnaai', form.current, 'RtOToXRoabFp5N8F9')
+    emailjs.sendForm('service_qw0ehq6', 'template_m0983mh', form.current, 'K6tmDXCLLT2RZvTdv')
       .then((result) => {
           console.log(result.text);
           e.target.reset();
+          toast.success('Message Sent Successfully', {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "dark",
+            });
           console.log('message sent');
       }, (error) => {
           console.log(error.text);
       });
   };
+
   return (
     <>
       <div className="local-bootstrap">
@@ -36,7 +50,8 @@ export default function SignUp() {
         label="Name"
         className="mb-3"
       >
-        <Form.Control as="textarea" name="user_name" />
+        <Form.Control as="textarea" name="user_name" placeholder="placeholder"
+/>
       </FloatingLabel>
       <FloatingLabel
         controlId="floatingInput"
@@ -44,7 +59,8 @@ export default function SignUp() {
         className="mb-3"
         name="user_email"
       >
-        <Form.Control type="email" name="user_email"/>
+        <Form.Control type="email" name="user_email" placeholder="placeholder"
+/>
       </FloatingLabel>
       {/* <FloatingLabel
         controlId="floatingTextarea"
@@ -56,19 +72,21 @@ export default function SignUp() {
       <FloatingLabel controlId="floatingTextarea2" label="Message">
         <Form.Control
           as="textarea"
-          placeholder="Leave a comment here"
+          placeholder="placeholder"
           name="message"
           style={{ height: '200px' }}
           className="mb-3"
         />
       </FloatingLabel>
-      <Button variant="primary" type="submit" value="send" className="mb-5">
+      <Button onClick={notify} variant="primary" type="submit" value="send" className="mb-5">
         Submit
       </Button>
       </Form>
+
     </div>
     </div>
-  
+    <ToastContainer closeButton={false} />
+
     <Footer />
     </>
   );
